@@ -1,0 +1,7 @@
+{
+  "mongoURI": {
+    "username": "sid",
+    "pwd": "2zCdlArFu8rnhjFE",
+    "uri": "mongodb+srv://sid:2zCdlArFu8rnhjFE@expense-tracker-f2sjz.mongodb.net/test?retryWrites=true&w=majority"
+  }
+}
