@@ -1,3 +1,31 @@
+.inputSingleLine {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  margin: 40px 0px;
+}
+.inputSingleLine p {
+  margin: 0px;
+  padding: 0px;
+  margin-right: 20px;
+}
+.inputSingleLine button {
+  margin-left: 20px;
+  width: 100px;
+}
+.inputBox {
+  width: 500px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 20px;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+.inputBox:focus {
+  outline: none;
+  background-color: #ddd;
+}
 .sidenav {
   height: 100%;
   width: 250px;
@@ -31,6 +59,17 @@
   padding: 20px 10px;
 }
 
+.addExpenseButton {
+  margin-left: 10px;
+  margin-top: 20px;
+  padding: 10px 40px !important;
+  background-color: #045de9 !important;
+  background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%);
+  border-radius: 4px !important;
+  font-weight: bold !important;
+  border: none !important;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;
@@ -41,5 +80,4 @@
 }
 
 @media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 2) {
-  
 }
