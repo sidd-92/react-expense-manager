@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const budgetSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+  _id: { type: String, default: "budget1234" },
   totalBudget: { type: Number, default: 0 }
 });
 

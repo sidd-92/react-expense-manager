@@ -3,19 +3,20 @@ import AnalyticsCard from "./components/AnalyticsCard";
 import ExpenseList from "./components/ExpenseList";
 import Button from "react-bootstrap/Button";
 import "./App.css";
-
-function App() {
-  return (
-    <div>
-      <AnalyticsCard />
+class App extends React.Component {
+  render() {
+    return (
       <div>
-        <Button className="addExpenseButton" variant="primary">
-          Add Expense
-        </Button>
+        <AnalyticsCard />
+        <div>
+          <Button className="addExpenseButton" variant="primary">
+            Add Expense
+          </Button>
+        </div>
+        <ExpenseList />
       </div>
-      <ExpenseList />
-    </div>
-  );
+    );
+  }
 }
 
 export default App;

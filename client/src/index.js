@@ -3,12 +3,15 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Main from "./main";
 import * as serviceWorker from "./serviceWorker";
+
+import store from "./store";
+import { Provider } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <Main />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById("root")
 );
 

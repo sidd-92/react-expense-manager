@@ -9,7 +9,6 @@ const categorySchema = require("../../models/category");
 router.get("/", (req, res, next) => {
   categorySchema
     .find()
-    .sort({ date: -1 })
     .select("-_v")
     .exec()
     .then(result => {
@@ -17,7 +16,8 @@ router.get("/", (req, res, next) => {
         count: result.length,
         categories: result.map(doc => {
           return {
-            category: doc.category,
+            value: doc.value,
+            label: doc.label,
             _id: doc._id
           };
         })
@@ -30,7 +30,8 @@ router.get("/", (req, res, next) => {
 router.post("/", (req, res, next) => {
   const newCategory = new categorySchema({
     _id: new mongoose.Types.ObjectId(),
-    category: req.body.category
+    value: req.body.value,
+    label: req.body.label
   });
   newCategory
     .save()
@@ -41,7 +42,8 @@ router.post("/", (req, res, next) => {
           message: "Created Category Successfully",
           createdExpense: {
             _id: new mongoose.Types.ObjectId(),
-            category: req.body.category
+            value: req.body.value,
+            label: req.body.label
           }
         });
       } else {

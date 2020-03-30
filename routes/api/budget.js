@@ -17,47 +17,48 @@ router.get("/", (req, res, next) => {
     .catch(err => console.log(err));
 });
 router.post("/", async (req, res, next) => {
-  const budget = await budgetSchema
-    .find()
-    .select("-_v")
-    .exec();
-  if (budget.length === 0) {
-    const newBudget = new budgetSchema({
-      _id: new mongoose.Types.ObjectId(),
-      totalBudget: req.body.totalBudget
-    });
-    newBudget
-      .save()
-      .then(result => {
-        console.log(result);
-        if (result) {
-          res.status(201).json({
-            message: "Created Budget Successfully",
-            createdExpense: {
-              _id: new mongoose.Types.ObjectId(),
-              totalBudget: req.body.totalBudget
-            }
-          });
-        } else {
-          res.status(404).json({
-            message: "No Valid Entry Found"
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
+  const newBudget = new budgetSchema({
+    totalBudget: req.body.totalBudget
+  });
+  newBudget
+    .save()
+    .then(result => {
+      //console.log(result);
+      if (result) {
+        res.status(201).json({
+          message: "Created Budget Successfully",
+          createdExpense: {
+            totalBudget: req.body.totalBudget
+          }
         });
+      } else {
+        res.status(404).json({
+          message: "No Valid Entry Found"
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
       });
-  } else {
-    const updatedBudget = await budgetSchema
-      .findByIdAndUpdate(budget[0]._id, {
-        $set: { totalBudget: req.body.totalBudget }
-      })
-      .select("totalBudget _id")
-      .exec();
-    res.status(200).json(updatedBudget);
+    });
+});
+
+router.patch("/:id", async (req, res, next) => {
+  //budget1234
+  const budgetDetail = await budgetSchema.findById(req.params.id).exec();
+  if (!budgetDetail)
+    return res.status(404).send("The expense with the given ID was not found.");
+  let query = { $set: {} };
+  for (let key in req.body) {
+    if (budgetDetail[key] && budgetDetail[key] !== req.body[key])
+      query.$set[key] = req.body[key];
   }
+  const updatedbudgetDetail = await budgetSchema
+    .updateOne({ _id: req.params.id }, query)
+    .exec();
+
+  res.send("Budget Updated Successfully");
 });
 module.exports = router;
