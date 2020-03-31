@@ -17,17 +17,14 @@ class CompletionPieComponent extends React.Component {
           left: "-45px",
           height: "151px"
         }}
-        data={[
-          {
-            color: "#E38627",
-            value: 188
-          }
-        ]}
-        label
+        data={dataArray}
+        label={({ data, dataIndex }) =>
+          Math.round(data[dataIndex].percentage) + "% Spent"
+        }
         labelPosition={0}
         labelStyle={{
           fontFamily: "sans-serif",
-          fontSize: "25px"
+          fontSize: "14px"
         }}
         lengthAngle={360}
         lineWidth={20}

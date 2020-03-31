@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Select from "react-select";
-import { createNewExpense, getCategories } from "./store/actions";
+import { createNewExpense, getCategories, getBudget } from "./store/actions";
 import Modal from "react-bootstrap/Modal";
 import "./App.css";
 const mapStateToProps = state => {
@@ -20,6 +20,9 @@ const mapDispatchToProps = dispatch => {
     },
     getListOfCategories: () => {
       dispatch(getCategories());
+    },
+    getUpdatedBudget: () => {
+      dispatch(getBudget());
     }
   };
 };
@@ -34,6 +37,7 @@ class App extends React.Component {
     };
   }
   componentDidMount() {
+    this.props.getUpdatedBudget();
     //console.log("REDUX STATE", this.props.reduxState);
   }
   onHide = () => {
@@ -69,7 +73,7 @@ class App extends React.Component {
     };
     return (
       <div>
-        <AnalyticsCard />
+        <AnalyticsCard totalBudget={this.props.reduxState.totalBudget} />
         <div>
           <Button
             onClick={() => this.setState({ showModal: true })}
@@ -124,7 +128,7 @@ class App extends React.Component {
                   styles={customStyles}
                   options={
                     categoriesExist ? this.props.reduxState.categories : options
-                  } 
+                  }
                 />
               </Form.Group>
 
