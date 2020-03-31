@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
         expenses: result.map(doc => {
           return {
             itemAmount: doc.itemAmount,
-            expenseDate: doc.expenseDate,
+            expenseDate: moment(doc.expenseDate).format("DD.MM.YYYY"),
             itemName: doc.itemName,
             isDeleted: doc.isDeleted,
             category: doc.category,

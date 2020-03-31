@@ -16,8 +16,10 @@ import {
   GET_BUDGET_FAILURE,
   EDIT_BUDGET_STARTED,
   EDIT_BUDGET_SUCCESS,
-  EDIT_EXPENSE_FAILURE,
-  EDIT_BUDGET_FAILURE
+  EDIT_BUDGET_FAILURE,
+  CREATE_BUDGET_STARTED,
+  CREATE_BUDGET_SUCCESS,
+  CREATE_BUDGET_FAILURE
 } from "./action-types";
 import axios from "axios";
 
@@ -210,8 +212,9 @@ export const editBudget = totalBudget => {
     dispatch(editBudgetStarted());
 
     axios
-      .post(`/api/budget`, { totalBudget: totalBudget })
+      .patch(`/api/budget/budget1234`, { totalBudget: totalBudget })
       .then(res => {
+        console.log(res.data);
         dispatch(editBudgetSuccess(res.data));
       })
       .catch(err => {
@@ -238,82 +241,37 @@ const editBudgetFailure = error => ({
   }
 });
 
-/* 
-export function addArticle(payload) {
-  return { type: ADD_ARTICLE, payload };
-}
+//POST NEW BUDGET
 
-export function getArticle(payload) {
-  return { type: GET_ARTICLE_BY_INDEX, payload };
-}
-
-export function getAllArticles(payload) {
-  return { type: GET_ALL_ARTICLES, payload };
-}
-
-export const addTodo = ({ title, userId }) => {
+export const createBudget = totalBudget => {
   return dispatch => {
-    dispatch(addTodoStarted());
+    dispatch(createBudgetStarted());
 
     axios
-      .post(`https://jsonplaceholder.typicode.com/todos`, {
-        title,
-        userId,
-        completed: false
-      })
+      .post(`/api/budget`, { totalBudget: totalBudget })
       .then(res => {
-        dispatch(addTodoSuccess(res.data));
+        dispatch(createBudgetSuccess(res.data));
       })
       .catch(err => {
-        dispatch(addTodoFailure(err.message));
+        dispatch(createBudgetFailure(err.message));
       });
   };
 };
 
-const addTodoSuccess = todo => ({
-  type: ADD_TODO_SUCCESS,
+const createBudgetStarted = () => ({
+  type: CREATE_BUDGET_STARTED
+});
+
+const createBudgetSuccess = totalBudget => ({
+  type: CREATE_BUDGET_SUCCESS,
   payload: {
-    ...todo
+    ...totalBudget
   }
 });
 
-const addTodoStarted = () => ({
-  type: ADD_TODO_STARTED
-});
-
-const addTodoFailure = error => ({
-  type: ADD_TODO_FAILURE,
-  payload: {
-    error
-  }
-});
-
-export const getAuthors = () => {
-  return dispatch => {
-    dispatch(getAuthorsStarted());
-    axios
-      .get(`https://jsonplaceholder.typicode.com/users`)
-      .then(res => {
-        dispatch(getAuthorsSucess(res.data));
-      })
-      .catch(err => {
-        dispatch(getAuthorsFailure(err.message));
-      });
-  };
-};
-const getAuthorsSucess = authors => ({
-  type: GET_AUTHORS_SUCESS,
-  payload: authors
-});
-
-const getAuthorsStarted = () => ({
-  type: GET_AUTHORS_STARTED
-});
-
-const getAuthorsFailure = error => ({
-  type: GET_AUTHORS_FAILURE,
+const createBudgetFailure = error => ({
+  type: CREATE_BUDGET_FAILURE,
   payload: {
     error
   }
 });
- */

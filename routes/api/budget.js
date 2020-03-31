@@ -59,6 +59,6 @@ router.patch("/:id", async (req, res, next) => {
     .updateOne({ _id: req.params.id }, query)
     .exec();
 
-  res.send("Budget Updated Successfully");
+  res.status(200).json(budgetDetail);
 });
 module.exports = router;

@@ -19,10 +19,15 @@ class CategoryList extends React.Component {
         <ListGroup bsPrefix="ListStyle">
           {arr.map(ind => (
             <ListGroup.Item
+              key={ind._id}
               style={{ width: "100%", display: "flex", alignItems: "center" }}
             >
               <p style={{ margin: "0px" }}>{ind.label}</p>
-              <Button style={{ marginLeft: "auto" }} variant="danger">
+              <Button
+                onClick={() => this.props.deleteCategory(ind)}
+                style={{ marginLeft: "auto" }}
+                variant="danger"
+              >
                 <FontAwesomeIcon icon={faTrashAlt} />
               </Button>
             </ListGroup.Item>

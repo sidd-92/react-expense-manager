@@ -14,6 +14,12 @@ import {
   GET_BUDGET_STARTED,
   GET_BUDGET_SUCCESS,
   GET_BUDGET_FAILURE,
+  EDIT_BUDGET_STARTED,
+  EDIT_BUDGET_SUCCESS,
+  EDIT_BUDGET_FAILURE,
+  CREATE_BUDGET_STARTED,
+  CREATE_BUDGET_SUCCESS,
+  CREATE_BUDGET_FAILURE,
   EDIT_EXPENSE_STARTED,
   EDIT_EXPENSE_SUCCESS,
   EDIT_EXPENSE_FAILURE
@@ -150,7 +156,6 @@ function rootReducer(state = initialState, action) {
       error: action.payload.error
     };
   }
-
   return state;
 }
 

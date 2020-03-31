@@ -13,7 +13,7 @@ import {
 import ToastContainer from "./Toast";
 
 const mapStateToProps = state => {
-  //console.log("STATE", state);
+  console.log("STATE", state);
   return { reduxState: state };
 };
 const mapDispatchToProps = dispatch => {
@@ -29,6 +29,7 @@ const mapDispatchToProps = dispatch => {
     },
     editBudget: totalBudget => {
       dispatch(editBudget(totalBudget));
+      return true;
     }
   };
 };
@@ -39,7 +40,8 @@ class Settings extends React.Component {
       categoryText: "",
       textError: "",
       showToast: false,
-      budget: ""
+      budget: "",
+      currentBudget: 0
     };
   }
   componentDidMount() {
@@ -72,14 +74,21 @@ class Settings extends React.Component {
   };
   updateBudget = e => {
     if (this.state.budget.length > 0) {
-      this.setState({ budget: "" }, () => {
-        this.props.editBudget(this.state.budget);
-      });
-
-      setTimeout(() => {
-        this.props.getCurrentBudget();
-      }, 300);
+      let a = this.props.editBudget(this.state.budget);
+      console.log("CURRENT", a);
+      if (a) {
+        this.setState({ budget: "" }, () => {
+          setTimeout(() => {
+            this.props.getCurrentBudget();
+          }, 100);
+        });
+      }
     }
+  };
+
+  deleteCategory = obj => {
+    let { _id } = obj;
+    console.log(obj, "DELETE");
   };
   render() {
     return (
@@ -111,7 +120,10 @@ class Settings extends React.Component {
               </div>
             </Container>
             <Container>
-              <CategoryList categoryList={this.props.reduxState.categories} />
+              <CategoryList
+                deleteCategory={this.deleteCategory}
+                categoryList={this.props.reduxState.categories}
+              />
             </Container>
           </div>
         </div>
