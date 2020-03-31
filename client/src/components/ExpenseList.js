@@ -56,7 +56,7 @@ class ExpenseList extends React.Component {
               <tbody>
                 {this.props.reduxState &&
                   this.props.reduxState.expenses.map((exp, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>
                         <Button
                           style={{

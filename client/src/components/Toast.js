@@ -4,22 +4,27 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 let ToastContainer = props => {
   return (
-    <Row>
-      <Col xs={6}>
-        <Toast
-          onClose={() => props.closeToast()}
-          show={props.showToast}
-          delay={3000}
-          autohide
-        >
-          <Toast.Header>
-            <strong className="mr-auto">Bootstrap</strong>
-            <small>11 mins ago</small>
-          </Toast.Header>
-          <Toast.Body>Woohoo, you're reading this text in a Toast!</Toast.Body>
-        </Toast>
-      </Col>
-    </Row>
+    <div
+      aria-live="polite"
+      aria-atomic="true"
+      style={{
+        position: "absolute",
+        top: "0px",
+        margin: "10px",
+        right: "0px",
+        minHeight: "100px"
+      }}
+    >
+      <Toast
+        style={{ backgroundColor: "#378B29", color: "white" }}
+        onClose={() => props.closeToast()}
+        show={props.showToast}
+        delay={1000}
+        autohide
+      >
+        <Toast.Body>{props.message}</Toast.Body>
+      </Toast>
+    </div>
   );
 };
 

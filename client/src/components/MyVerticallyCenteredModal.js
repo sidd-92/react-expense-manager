@@ -10,9 +10,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    addNewExpense: expenses => {
-      dispatch(createNewExpense(expenses));
-    },
     getListOfCategories: () => {
       dispatch(getCategories());
     }
@@ -20,10 +17,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 class MyVerticallyCenteredModal extends React.Component {
-  addExpense = data => {
-    let { itemName, itemAmount, expenseDate, category } = data;
-    this.props.addNewExpense(data);
-  };
   componentDidMount() {
     this.props.getListOfCategories();
   }
@@ -83,18 +76,7 @@ class MyVerticallyCenteredModal extends React.Component {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            onClick={() =>
-              this.addExpense({
-                itemName: "Book 1234",
-                itemAmount: "12.99",
-                expenseDate: Date.now(),
-                category: "Book"
-              })
-            }
-          >
-            Save
-          </Button>
+          <Button>Save</Button>
         </Modal.Footer>
       </Modal>
     );

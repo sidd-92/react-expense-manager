@@ -14,12 +14,12 @@ import {
   GET_BUDGET_STARTED,
   GET_BUDGET_SUCCESS,
   GET_BUDGET_FAILURE,
-  EDIT_BUDGET_STARTED,
-  EDIT_BUDGET_SUCCESS,
-  EDIT_BUDGET_FAILURE,
   CREATE_BUDGET_STARTED,
   CREATE_BUDGET_SUCCESS,
-  CREATE_BUDGET_FAILURE
+  CREATE_BUDGET_FAILURE,
+  DELETE_CATEGORY_STARTED,
+  DELETE_CATEGORY_SUCCESS,
+  DELETE_CATEGORY_FAILURE
 } from "./action-types";
 import axios from "axios";
 
@@ -236,6 +236,41 @@ const createBudgetSuccess = totalBudget => ({
 });
 
 const createBudgetFailure = error => ({
+  type: CREATE_BUDGET_FAILURE,
+  payload: {
+    error
+  }
+});
+
+//DELETE A CATEGORY
+
+export const deleteACategory = categoryID => {
+  return dispatch => {
+    dispatch(deleteACategoryStarted());
+
+    axios
+      .delete(`api/categories/${categoryID}`)
+      .then(res => {
+        dispatch(deleteACategorySuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(deleteACategoryFailure(err.message));
+      });
+  };
+};
+
+const deleteACategoryStarted = () => ({
+  type: DELETE_CATEGORY_STARTED
+});
+
+const deleteACategorySuccess = response => ({
+  type: DELETE_CATEGORY_SUCCESS,
+  payload: {
+    ...response
+  }
+});
+
+const deleteACategoryFailure = error => ({
   type: CREATE_BUDGET_FAILURE,
   payload: {
     error

@@ -3,15 +3,17 @@ import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import CategoryList from "./CategoryList/CategoryList";
+import Modal from "react-bootstrap/Modal";
 import { connect } from "react-redux";
 import {
   addCategories,
   getCategories,
   getBudget,
-  editBudget,
-  createBudget
+  createBudget,
+  deleteACategory
 } from "../store/actions";
 import ToastContainer from "./Toast";
+import ModalBody from "react-bootstrap/ModalBody";
 
 const mapStateToProps = state => {
   console.log("STATE", state);
@@ -30,6 +32,9 @@ const mapDispatchToProps = dispatch => {
     },
     createANewBudget: totalBudget => {
       dispatch(createBudget(totalBudget));
+    },
+    deleteCategory: id => {
+      dispatch(deleteACategory(id));
     }
   };
 };
@@ -41,7 +46,9 @@ class Settings extends React.Component {
       textError: "",
       showToast: false,
       budget: "",
-      currentBudget: 0
+      currentBudget: 0,
+      showModal: false,
+      categoryToDelete: {}
     };
   }
   componentDidMount() {
@@ -86,14 +93,30 @@ class Settings extends React.Component {
   };
 
   deleteCategory = obj => {
+    this.setState({ showModal: true, categoryToDelete: obj });
+  };
+  confirmDelete = obj => {
     let { _id } = obj;
+    this.props.deleteCategory(_id);
+    setTimeout(() => {
+      this.props.getListOfCategories();
+      this.setState({ categoryToDelete: {}, showModal: false });
+    }, 300);
     console.log(obj, "DELETE");
+  };
+  onHide = () => {
+    this.setState({ showModal: false });
   };
   render() {
     return (
       <React.Fragment>
         <div style={{ fontSize: "18px" }}>
           <h3>Settings</h3>
+          <ToastContainer
+            showToast={this.state.showToast}
+            closeToast={() => this.closeToast()}
+            message={"Category Was Added"}
+          />
           <div style={{ marginTop: "30px" }}>
             <Container>
               <div className="inputSingleLine">
@@ -126,10 +149,35 @@ class Settings extends React.Component {
             </Container>
           </div>
         </div>
-        <ToastContainer
-          showToast={this.state.showToast}
-          closeToast={() => this.closeToast()}
-        />
+        <Modal onHide={this.onHide} show={this.state.showModal} size="md">
+          <ModalBody>
+            <p>
+              Are You Sure You Want to Delete{" "}
+              <b>
+                {this.state.categoryToDelete &&
+                  this.state.categoryToDelete["label"]}{" "}
+              </b>
+              ?
+            </p>
+            <div style={{ display: "flex" }}>
+              <Button
+                onClick={() => this.confirmDelete(this.state.categoryToDelete)}
+                variant="primary"
+              >
+                Yes
+              </Button>
+              <Button
+                onClick={() =>
+                  this.setState({ categoryToDelete: {}, showModal: false })
+                }
+                className="ml-auto"
+                variant="danger"
+              >
+                No
+              </Button>
+            </div>
+          </ModalBody>
+        </Modal>
       </React.Fragment>
     );
   }
