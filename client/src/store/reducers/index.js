@@ -14,9 +14,6 @@ import {
   GET_BUDGET_STARTED,
   GET_BUDGET_SUCCESS,
   GET_BUDGET_FAILURE,
-  EDIT_BUDGET_STARTED,
-  EDIT_BUDGET_SUCCESS,
-  EDIT_BUDGET_FAILURE,
   CREATE_BUDGET_STARTED,
   CREATE_BUDGET_SUCCESS,
   CREATE_BUDGET_FAILURE,
@@ -150,6 +147,36 @@ function rootReducer(state = initialState, action) {
     };
   }
   if (action.type === GET_BUDGET_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload.error
+    };
+  }
+  if (action.type === CREATE_BUDGET_STARTED) {
+    return {
+      ...state,
+      loading: true
+    };
+  }
+  if (action.type === CREATE_BUDGET_SUCCESS) {
+    if (action.payload.key) {
+      console.log("Exists", action.payload);
+      return {
+        ...state,
+        loading: false,
+        error: null
+      };
+    } else {
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        totalBudget: action.payload[0].totalBudget
+      };
+    }
+  }
+  if (action.type === CREATE_BUDGET_FAILURE) {
     return {
       ...state,
       loading: false,

@@ -8,7 +8,8 @@ import {
   addCategories,
   getCategories,
   getBudget,
-  editBudget
+  editBudget,
+  createBudget
 } from "../store/actions";
 import ToastContainer from "./Toast";
 
@@ -30,6 +31,9 @@ const mapDispatchToProps = dispatch => {
     editBudget: totalBudget => {
       dispatch(editBudget(totalBudget));
       return true;
+    },
+    createANewBudget: totalBudget => {
+      dispatch(createBudget(totalBudget));
     }
   };
 };
@@ -74,9 +78,10 @@ class Settings extends React.Component {
   };
   updateBudget = e => {
     if (this.state.budget.length > 0) {
-      let a = this.props.editBudget(this.state.budget);
-      console.log("CURRENT", a);
-      if (a) {
+      this.props.createANewBudget(this.state.budget);
+      //let a = this.props.editBudget(this.state.budget);
+      //console.log("CURRENT", a);
+      if (true) {
         this.setState({ budget: "" }, () => {
           setTimeout(() => {
             this.props.getCurrentBudget();

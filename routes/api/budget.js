@@ -17,32 +17,46 @@ router.get("/", (req, res, next) => {
     .catch(err => console.log(err));
 });
 router.post("/", async (req, res, next) => {
-  const newBudget = new budgetSchema({
-    totalBudget: req.body.totalBudget
-  });
-  newBudget
-    .save()
-    .then(result => {
-      //console.log(result);
-      if (result) {
-        res.status(201).json({
-          message: "Created Budget Successfully",
-          createdExpense: {
-            totalBudget: req.body.totalBudget
-          }
-        });
-      } else {
-        res.status(404).json({
-          message: "No Valid Entry Found"
-        });
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({
-        error: err
-      });
+  const budgetDetail = await budgetSchema.findById("budget1234").exec();
+  if (!budgetDetail) {
+    const newBudget = new budgetSchema({
+      totalBudget: req.body.totalBudget
     });
+    newBudget
+      .save()
+      .then(result => {
+        //console.log(result);
+        if (result) {
+          res.status(201).json({
+            message: "Created Budget Successfully",
+            createdExpense: {
+              totalBudget: req.body.totalBudget
+            }
+          });
+        } else {
+          res.status(404).json({
+            message: "No Valid Entry Found"
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+  } else {
+    let query = { $set: {} };
+    for (let key in req.body) {
+      if (budgetDetail[key] && budgetDetail[key] !== req.body[key])
+        query.$set[key] = req.body[key];
+    }
+    const updatedbudgetDetail = await budgetSchema
+      .updateOne({ _id: "budget1234" }, query)
+      .exec();
+
+    res.status(200).json(budgetDetail);
+  }
 });
 
 router.patch("/:id", async (req, res, next) => {
