@@ -59,6 +59,8 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+//TEST ROUTE
+/* 
 router.patch("/:id", async (req, res, next) => {
   //budget1234
   const budgetDetail = await budgetSchema.findById(req.params.id).exec();
@@ -74,5 +76,5 @@ router.patch("/:id", async (req, res, next) => {
     .exec();
 
   res.status(200).json(budgetDetail);
-});
+}); */
 module.exports = router;

@@ -28,10 +28,6 @@ const mapDispatchToProps = dispatch => {
     getCurrentBudget: () => {
       dispatch(getBudget());
     },
-    editBudget: totalBudget => {
-      dispatch(editBudget(totalBudget));
-      return true;
-    },
     createANewBudget: totalBudget => {
       dispatch(createBudget(totalBudget));
     }
@@ -79,8 +75,6 @@ class Settings extends React.Component {
   updateBudget = e => {
     if (this.state.budget.length > 0) {
       this.props.createANewBudget(this.state.budget);
-      //let a = this.props.editBudget(this.state.budget);
-      //console.log("CURRENT", a);
       if (true) {
         this.setState({ budget: "" }, () => {
           setTimeout(() => {

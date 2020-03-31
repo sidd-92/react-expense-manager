@@ -207,40 +207,6 @@ const getBudgetFailure = error => ({
   }
 });
 
-export const editBudget = totalBudget => {
-  return dispatch => {
-    dispatch(editBudgetStarted());
-
-    axios
-      .patch(`/api/budget/budget1234`, { totalBudget: totalBudget })
-      .then(res => {
-        console.log(res.data);
-        dispatch(editBudgetSuccess(res.data));
-      })
-      .catch(err => {
-        dispatch(editBudgetFailure(err.message));
-      });
-  };
-};
-
-const editBudgetStarted = () => ({
-  type: EDIT_BUDGET_STARTED
-});
-
-const editBudgetSuccess = totalBudget => ({
-  type: EDIT_BUDGET_SUCCESS,
-  payload: {
-    ...totalBudget
-  }
-});
-
-const editBudgetFailure = error => ({
-  type: EDIT_BUDGET_FAILURE,
-  payload: {
-    error
-  }
-});
-
 //POST NEW BUDGET
 
 export const createBudget = totalBudget => {
