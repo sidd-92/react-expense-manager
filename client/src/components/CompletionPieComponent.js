@@ -24,7 +24,7 @@ class CompletionPieComponent extends React.Component {
         labelPosition={0}
         labelStyle={{
           fontFamily: "sans-serif",
-          fontSize: "14px"
+          fontSize: "11px"
         }}
         lengthAngle={360}
         lineWidth={20}

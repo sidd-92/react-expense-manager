@@ -10,7 +10,7 @@ const expenseSchema = require("../../models/expense");
 router.get("/", (req, res, next) => {
   expenseSchema
     .find()
-    .sort({ date: -1 })
+    .sort({ isDeleted: false, expenseDate: -1 })
     .select("-_v")
     .exec()
     .then(result => {
@@ -19,7 +19,7 @@ router.get("/", (req, res, next) => {
         expenses: result.map(doc => {
           return {
             itemAmount: doc.itemAmount,
-            expenseDate: moment(doc.expenseDate).format("DD.MM.YYYY"),
+            expenseDate: doc.expenseDate,
             itemName: doc.itemName,
             isDeleted: doc.isDeleted,
             category: doc.category,
@@ -66,7 +66,7 @@ router.post("/", (req, res, next) => {
             itemName: req.body.itemName,
             category: req.body.category,
             itemAmount: req.body.itemAmount,
-            isDeleted: req.body.isDeleted,
+            isDeleted: req.body.isDeleted || result.isDeleted,
             notes: req.body.notes
           }
         });
@@ -91,13 +91,12 @@ router.patch("/:id", async (req, res, next) => {
     return res.status(404).send("The expense with the given ID was not found.");
   let query = { $set: {} };
   for (let key in req.body) {
-    if (expenseDetail[key] && expenseDetail[key] !== req.body[key])
-      query.$set[key] = req.body[key];
+    query.$set[key] = req.body[key];
   }
   const updatedexpenseDetail = await expenseSchema
-    .updateOne({ _id: req.params.id }, query)
+    .update({ _id: req.params.id }, query)
     .exec();
-
-  res.send("Expense Updated Successfully");
+  console.log("UPDATED BACKEND", updatedexpenseDetail);
+  res.status(200).json({ message: "Updated Successfully" });
 });
 module.exports = router;

@@ -83,6 +83,28 @@ function rootReducer(state = initialState, action) {
     };
   }
 
+  if (action.type === EDIT_EXPENSE_STARTED) {
+    return {
+      ...state,
+      loading: true
+    };
+  }
+  if (action.type === EDIT_EXPENSE_SUCCESS) {
+    console.log("ACTION", action.payload);
+    return {
+      ...state,
+      loading: false,
+      error: null
+    };
+  }
+  if (action.type === EDIT_EXPENSE_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload.error
+    };
+  }
+
   if (action.type === GET_CATEGORIES_STARTED) {
     return {
       ...state,

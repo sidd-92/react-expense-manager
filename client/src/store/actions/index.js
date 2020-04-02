@@ -8,6 +8,9 @@ import {
   ADD_EXPENSE_STARTED,
   ADD_EXPENSE_SUCESS,
   ADD_EXPENSE_FAILURE,
+  EDIT_EXPENSE_STARTED,
+  EDIT_EXPENSE_SUCCESS,
+  EDIT_EXPENSE_FAILURE,
   ADD_CATEGORY_STARTED,
   ADD_CATEGORY_SUCCESS,
   ADD_CATEGORY_FAILURE,
@@ -58,8 +61,6 @@ const getExpensesFailure = error => ({
 });
 
 //EXPENSE POST REQUEST
-
-//EXPENSE GET REQUESTS
 export const createNewExpense = expenseData => {
   let { itemName, category, itemAmount, expenseDate } = expenseData;
   return dispatch => {
@@ -94,6 +95,42 @@ const createExpensesSuccess = expense => ({
 
 const createExpensesFailure = error => ({
   type: ADD_EXPENSE_FAILURE,
+  payload: {
+    error
+  }
+});
+
+//PATCH A EXPENSE
+export const editExpense = (expenseData, id, index) => {
+  console.log("EXPENSE", expenseData);
+  return dispatch => {
+    dispatch(editExpenseStarted());
+
+    axios
+      .patch(`/api/expenses/${id}`, expenseData)
+      .then(res => {
+        dispatch(editExpenseSuccess(res.data, index));
+      })
+      .catch(err => {
+        dispatch(editExpenseFailure(err.message));
+      });
+  };
+};
+
+const editExpenseStarted = () => ({
+  type: EDIT_EXPENSE_STARTED
+});
+
+const editExpenseSuccess = (expense, index) => ({
+  type: EDIT_EXPENSE_SUCCESS,
+  payload: {
+    ...expense,
+    index
+  }
+});
+
+const editExpenseFailure = error => ({
+  type: EDIT_EXPENSE_FAILURE,
   payload: {
     error
   }
@@ -271,7 +308,7 @@ const deleteACategorySuccess = response => ({
 });
 
 const deleteACategoryFailure = error => ({
-  type: CREATE_BUDGET_FAILURE,
+  type: DELETE_CATEGORY_FAILURE,
   payload: {
     error
   }

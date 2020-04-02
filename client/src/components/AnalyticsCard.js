@@ -3,10 +3,32 @@ import Card from "react-bootstrap/Card";
 import styles from "./styles/analytics.module.css";
 import PieChartComponent from "./PieChartComponent";
 import CompletionPieComponent from "./CompletionPieComponent";
+import axios from "axios";
 import Button from "react-bootstrap/Button";
 class AnalyticsCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      totalExpense: 0
+    };
+  }
+  componentDidMount() {
+    this.getExpenses();
+  }
+  getExpenses = async () => {
+    let expenses = await axios.get(`/api/expenses`);
+    let listOfExpenses = expenses.data.expenses;
+    let totalExpense = this.state.totalExpense;
+    for (let i = 0; i < listOfExpenses.length; i++) {
+      totalExpense += listOfExpenses[i].itemAmount;
+    }
+    console.log("Total", totalExpense);
+    this.setState({ totalExpense });
+  };
+
   render() {
     let { totalBudget } = this.props;
+    let { totalExpense } = this.state;
     return (
       <div className={styles.analyticsMain}>
         <Card className={styles.analyticsBase}>
@@ -17,7 +39,7 @@ class AnalyticsCard extends React.Component {
                 dataArray={[
                   {
                     color: "#E38627",
-                    value: totalBudget || 0
+                    value: (totalExpense / totalBudget) * 100 || 0
                   }
                 ]}
               />
@@ -30,7 +52,7 @@ class AnalyticsCard extends React.Component {
                 </div>
                 <div>
                   <h5>Total Expense</h5>
-                  <p>Rs. 100000</p>
+                  <p>Rs. {totalExpense}</p>
                 </div>
               </div>
             </div>

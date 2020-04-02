@@ -12,11 +12,12 @@ let ToastContainer = props => {
         top: "0px",
         margin: "10px",
         right: "0px",
-        minHeight: "100px"
+        minHeight: "100px",
+        zIndex: "999"
       }}
     >
       <Toast
-        style={{ backgroundColor: "#378B29", color: "white" }}
+        style={{ backgroundColor: props.color || "#378B29", color: "white" }}
         onClose={() => props.closeToast()}
         show={props.showToast}
         delay={1000}
