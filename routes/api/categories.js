@@ -11,51 +11,48 @@ router.get("/", (req, res, next) => {
     .find()
     .select("-_v")
     .exec()
-    .then(result => {
+    .then((result) => {
       const response = {
         count: result.length,
-        categories: result.map(doc => {
+        categories: result.map((doc) => {
           return {
-            value: doc.value,
-            label: doc.label,
-            _id: doc._id
+            name: doc.name,
+            _id: doc._id,
           };
-        })
+        }),
       };
       res.status(200).json(response);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 router.post("/", (req, res, next) => {
   const newCategory = new categorySchema({
     _id: new mongoose.Types.ObjectId(),
-    value: req.body.value,
-    label: req.body.label
+    name: req.body.name,
   });
   newCategory
     .save()
-    .then(result => {
+    .then((result) => {
       console.log(result);
       if (result) {
         res.status(201).json({
           message: "Created Category Successfully",
           createdExpense: {
             _id: new mongoose.Types.ObjectId(),
-            value: req.body.value,
-            label: req.body.label
-          }
+            name: result.name,
+          },
         });
       } else {
         res.status(404).json({
-          message: "No Valid Entry Found"
+          message: "No Valid Entry Found",
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
-        error: err
+        error: err,
       });
     });
 });
@@ -65,16 +62,16 @@ router.delete("/:categoryID", (req, res, next) => {
   categorySchema
     .findByIdAndRemove({ _id: id })
     .exec()
-    .then(result => {
+    .then((result) => {
       res.status(200).json({
-        message: "Category Deleted"
+        message: "Category Deleted",
       });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
         message: "Given ID Not Available In DB",
-        error: err
+        error: err,
       });
     });
 });

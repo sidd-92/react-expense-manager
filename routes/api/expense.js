@@ -5,6 +5,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const moment = require("moment");
 const expenseSchema = require("../../models/expense");
+const Category = require("../../models/category");
 
 //GET ALL EXPENSES
 router.get("/", (req, res, next) => {
@@ -12,24 +13,25 @@ router.get("/", (req, res, next) => {
     .find()
     .sort({ isDeleted: false, expenseDate: -1 })
     .select("-_v")
+    .populate("category", "name")
     .exec()
-    .then(result => {
+    .then((result) => {
       const response = {
         count: result.length,
-        expenses: result.map(doc => {
+        expenses: result.map((doc) => {
           return {
             itemAmount: doc.itemAmount,
             expenseDate: doc.expenseDate,
             itemName: doc.itemName,
             isDeleted: doc.isDeleted,
             category: doc.category,
-            _id: doc._id
+            _id: doc._id,
           };
-        })
+        }),
       };
       res.status(200).json(response);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 //GET SINGLE EXPENSE BY ID
@@ -44,42 +46,51 @@ router.get("/:id", async (req, res, next) => {
 
 //CREATE A NEW EXPENSE ENTRY
 router.post("/", (req, res, next) => {
-  const newExpense = new expenseSchema({
-    _id: new mongoose.Types.ObjectId(),
-    expenseDate: req.body.expenseDate,
-    itemName: req.body.itemName,
-    category: req.body.category,
-    isDeleted: req.body.isDeleted,
-    itemAmount: req.body.itemAmount,
-    notes: req.body.notes
-  });
-  newExpense
-    .save()
-    .then(result => {
-      console.log(result);
+  Category.findById(req.body.category)
+    .exec()
+    .then((category) => {
+      console.log("CATEGORY", category);
+      if (!category) {
+        return res.status(404).json({
+          message: "Category Not Found",
+        });
+      }
+
+      const newExpense = new expenseSchema({
+        _id: new mongoose.Types.ObjectId(),
+        expenseDate: req.body.expenseDate,
+        itemName: req.body.itemName,
+        category: req.body.category,
+        isDeleted: req.body.isDeleted,
+        itemAmount: req.body.itemAmount,
+        notes: req.body.notes,
+      });
+      return newExpense.save();
+    })
+    .then((result) => {
       if (result) {
         res.status(201).json({
           message: "Created Expense Successfully",
           createdExpense: {
             _id: new mongoose.Types.ObjectId(),
-            expenseDate: req.body.expenseDate,
-            itemName: req.body.itemName,
-            category: req.body.category,
-            itemAmount: req.body.itemAmount,
-            isDeleted: req.body.isDeleted || result.isDeleted,
-            notes: req.body.notes
-          }
+            expenseDate: result.expenseDate,
+            itemName: result.itemName,
+            category: result.category,
+            itemAmount: result.itemAmount,
+            isDeleted: result.isDelete,
+            notes: result.notes,
+          },
         });
       } else {
         res.status(404).json({
-          message: "No Valid Entry Found"
+          message: "No Valid Entry Found",
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json({
-        error: err
+        error: err,
       });
     });
 });

@@ -4,13 +4,17 @@ const expenseSchema = mongoose.Schema({
   expenseDate: {
     type: Date,
     required: true,
-    default: Date.now
+    default: Date.now,
   },
   itemName: { type: String, required: true },
-  category: { type: String, required: true },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Categories",
+    required: true,
+  },
   itemAmount: { type: Number, required: true, default: 0 },
   notes: { type: String },
-  isDeleted: { type: Boolean, default: false }
+  isDeleted: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Expense", expenseSchema);
