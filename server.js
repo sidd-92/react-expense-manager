@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const morgan = require("morgan");
 const PORT = process.env.PORT || 5000;
 const path = require("path");
@@ -8,6 +9,7 @@ connectDB();
 
 //Init Middleware
 app.use(morgan("dev"));
+app.use(cors());
 app.use(express.json({ extended: false }));
 app.use("/api/expenses", require("./routes/api/expense"));
 app.use("/api/categories", require("./routes/api/categories"));
