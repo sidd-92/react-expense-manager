@@ -1,18 +1,14 @@
 import React from "react";
 export const linkHome = "/home";
 export const linkExpenses = "/expenses";
-export const linkBase = "/";
+export const linkCategories = "/categories";
+export const linkBudget = "/budget";
 const Home = React.lazy(() => import("./components/views/Home"));
 const Expenses = React.lazy(() => import("./components/views/Expenses"));
-const Welcome = React.lazy(() => import("./components/views/Welcome"));
+const Categories = React.lazy(() => import("./components/views/Categories"));
+const Budget = React.lazy(() => import("./components/views/Budget"));
 
 const routes = [
-  {
-    path: linkBase,
-    exact: true,
-    name: "Welcome",
-    component: Welcome,
-  },
   {
     path: linkHome,
     exact: true,
@@ -24,6 +20,18 @@ const routes = [
     exact: true,
     name: "Expenses",
     component: Expenses,
+  },
+  {
+    path: linkCategories,
+    exact: true,
+    name: "Categories",
+    component: Categories,
+  },
+  {
+    path: linkBudget,
+    exact: true,
+    name: "Budget",
+    component: Budget,
   },
 ];
 export default routes;

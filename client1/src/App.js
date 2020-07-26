@@ -8,18 +8,13 @@ const Welcome = React.lazy(() => import("./components/views/Welcome"));
 class App extends Component {
   render() {
     return (
-      <Router basename="/">
+      <Router basename="/manager">
         <React.Suspense fallback={<ProgressSpinner />}>
           <Switch>
             <Route
-              path="/home"
+              path="/"
               name="Home"
               render={(props) => <DefaultLayout {...props} />}
-            />
-            <Route
-              path={linkBase}
-              name="Welcome"
-              render={(props) => <Welcome {...props} />}
             />
           </Switch>
         </React.Suspense>
