@@ -17,7 +17,8 @@ module.exports = {
 
       black: "#000",
       white: "#fff",
-
+      btncolor: "#577590",
+      btncolor1: "#5e548e",
       gray: {
         100: "#f7fafc",
         200: "#edf2f7",
@@ -290,6 +291,11 @@ module.exports = {
       ...theme("spacing"),
       full: "100%",
       screen: "100vh",
+      "200px": "200px",
+      "300px": "300px",
+      "400px": "400px",
+      "430px": "430px",
+      "800px": "800px",
     }),
     inset: {
       "0": "0",
